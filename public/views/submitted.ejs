@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="./s/bootstrap.min.css" >
+</head>
+<body>
+<%- include ('./header') %>
+<% for (let i = 0; i< datas.length; i++) { %>
+<div class="card" style="width:300px; margin: auto; top: 40px;">
+    <img class="card-img-top imgPath" src="<%=datas[i].imagePath%>" alt="Card image">
+    <div class="card-body" style="background-color: #b2bfb5" >
+        <%=datas[i].name%>
+    </div>
+</div>
+<% }%>
+</body>
+</html>

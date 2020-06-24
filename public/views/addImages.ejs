@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Images</title>
+    <link rel="stylesheet" type="text/css" href="./s/bootstrap.min.css" >
+    <script src="/script/loader.js"></script>
+</head>
+<body>
+<%- include ('./header') %>
+<form>
+    <div class="custom-file">
+        <input type="file" class="custom-file-input" id="image-file">
+        <label class="custom-file-label" for="customFile">Choose file</label>
+    </div>
+    <input type="button" value="Submit" onclick="UploadImage()" />
+</form>
+<p id="alert" style="display: none">ფაილი აიტვირთა</p>
+</body>
+</html>
