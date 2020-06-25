@@ -1,4 +1,4 @@
-module.exports.RomanizationUtil = function (word) {
+function RomanizationUtil(word) {
     let words = {
         ა: 'a',
         ბ: 'b',
@@ -36,18 +36,18 @@ module.exports.RomanizationUtil = function (word) {
     };
     return words[word];
 }
-module.exports.isGeorgianWord = function (word) {
+function isGeorgianWord(word) {
     return this.RomanizationUtil(word[0]);
 }
-module.exports.convertToUpperCase = function (word) {
+function convertToUpperCase(word) {
     return word.toUpperCase();
 }
-module.exports.translateSymbols = function (word, upper = true) {
+function translateSymbols(word, upper = true) {
     if (!this.isGeorgianWord(word)) return word;
     let finalWord = '';
     for (const symbol of word) {
         if (this.RomanizationUtil(symbol)) {
-            finalWord += this.RomanizationUtil[symbol];
+            finalWord += this.RomanizationUtil(symbol);
         } else {
             finalWord += symbol;
         }

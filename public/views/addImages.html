@@ -1,0 +1,18 @@
+<form style="width: 500px; margin: auto; text-align: center; top: 20px; position: relative">
+    <div class="custom-file">
+        <input type="file" class="custom-file-input" id="image-file">
+        <label
+                class="custom-file-label">
+            Choose file
+        </label>
+    </div>
+    <input
+            type="button"
+            class="btn btn-success"
+            value="Submit"
+            ng-click="uploadImage()"
+    />
+</form>
+<div id="alert"  style="display: none"  class="alert alert-success">
+    <strong>Success!</strong> Indicates a successful or positive action.
+</div>

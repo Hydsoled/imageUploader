@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Image = require('../models/image');
 const multer = require('multer');
+const path = require('path');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -39,7 +40,18 @@ mongoose.connect(
 );
 
 module.exports = (app) => {
-    app.get('/', (req, res) => {
+    app.get('/submitted', (req, res) => {
+        let datas = '';
+        Image.find({name: {$ne: null}}, (error, result) => {
+            if (!error) {
+                datas = result;
+            } else {
+                console.log('cant get non submitted images');
+            }
+            res.send({datas: datas});
+        });
+    });
+    app.get('/getNotSubmitted', (req, res, next) => {
         let datas = '';
         Image.find({name: null}, (error, result) => {
             if (!error) {
@@ -47,27 +59,17 @@ module.exports = (app) => {
             } else {
                 console.log('cant get non submitted images');
             }
-            res.render('index.ejs', {datas: datas});
-
+            res.send({datas: datas});
         });
     });
-    app.get('/submitted', (req, res) => {
-        let datas = '';
-        Image.find({name: {$ne: null}}, (error, result) => {
-            if (!error) {
-                datas = result;
-                console.log(datas);
-            } else {
-                console.log('cant get non submitted images');
-            }
-            res.render('views/submitted.ejs', {datas: datas});
 
-        });
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname+ '/../public/index.html'));
     });
-    app.get('/addImages', (req, res) => {
-        res.render('views/addImages.ejs');
-    });
-    app.post('/uploadImage', upload.single('photo'), (req, res, next) => {
+
+
+    app.post('/uploadImage', upload.single('photo'), (req, res) => {
+        console.log(req.file);
         if (req.file) {
             const image = new Image({
                 _id: new mongoose.Types.ObjectId(),
@@ -86,11 +88,15 @@ module.exports = (app) => {
         }
     });
 
-    app.post('/updateImage', (req, res, next) => {
+    app.post('/updateImage', (req, res) => {
         let data = JSON.parse(Object.keys(req.body));
-        Image.updateOne({imagePath: data.imagePath}, {$set : {name: data.imgName}}).catch(
-            (error, affected, resp)=>{
-                console.log(error);
+        console.log(data);
+        Image.updateOne({imagePath: data.imagePath}, {$set: {name: data.imgName}}).then(
+            (result) => {
+                res.status(200).send(result);
+            }).catch(
+            (error) => {
+                res.status(500).send(error);
             }
         );
     });
