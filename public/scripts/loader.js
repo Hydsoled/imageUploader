@@ -1,4 +1,19 @@
 let app = angular.module('myapp', ['ngRoute']);
+app.filter('myFilter', function () {
+    return function (input, search) {
+        let out = [];
+        for (let data of input){
+            if (search.geo){
+                if (data.name.search(search.geo)!==-1 || data.name.search(search.eng)!==-1 || data.name.search(search.eng.toLowerCase())!==-1){
+                    out.push(data);
+                    console.log(out);
+                }
+            }
+            else out.push(data);
+        }
+        return out;
+    }
+})
 
 app.config(['$routeProvider', function ($routeProvider) {
 
@@ -18,6 +33,16 @@ app.config(['$routeProvider', function ($routeProvider) {
 }]);
 
 app.controller('MainController', ['$scope', '$http', function ($scope, $http) {
+
+    $scope.$on('$routeChangeStart', function($event, next, current) {
+        let url = next.$$route.templateUrl;
+        if (url ==='/views/notSubmitted.html'){
+            $scope.getNotSubmitted();
+        }else if (url === 'views/result.html'){
+            $scope.getSubmitted();
+        }
+    });
+
     $scope.notSubmitted = '';
     $scope.submitted = '';
     $scope.getNotSubmitted = function () {
@@ -63,7 +88,6 @@ app.controller('MainController', ['$scope', '$http', function ($scope, $http) {
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 console.log('sent');
-
             }
         };
         let removeData = $scope.notSubmitted.indexOf(data);
@@ -73,7 +97,7 @@ app.controller('MainController', ['$scope', '$http', function ($scope, $http) {
         xhttp.send(JSON.stringify({imagePath: data.imagePath, imgName: data.name}));
     }
     $scope.search = function (searchBar) {
-        $scope.textGeorgian = searchBar;
+        $scope.textGeorgian = tranlateToGeorgian(searchBar);
         $scope.text = translateSymbols(searchBar);
     }
 }]);

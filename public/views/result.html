@@ -10,7 +10,7 @@
     />
     <input class="btn btn-primary" type="submit" value="Submit"/>
 </form>
-<div ng-repeat="data in submitted | filter :{name : text, name: textGeorgian} "
+<div ng-repeat="data in submitted | myFilter: {eng: text, geo:textGeorgian }"
      class="card" style="width:300px; margin: auto; top: 40px;">
     <img class="card-img-top imgPath" src="{{data.imagePath}}" alt="Card image">
     <div class="card-body" style="background-color: #b2bfb5">
